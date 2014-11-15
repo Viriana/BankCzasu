@@ -12,7 +12,7 @@ namespace BankCzasu
         private static MainDebug instance;
         private static Object locker = new Object();
         //private List<string> log = new List<string>();
-        private bool logToFile = true;
+        private bool logToFile = false;
         private DateTime logCreation;
 
         public static MainDebug Instance
