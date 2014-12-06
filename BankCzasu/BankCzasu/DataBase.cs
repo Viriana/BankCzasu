@@ -172,6 +172,7 @@ namespace BankCzasu
 
             from = table.ToString();
 
+            //pars columns to select
             if (fields.Length == 0)
                 select = "*";
             else
@@ -188,6 +189,7 @@ namespace BankCzasu
 
             string response = POST(query);
 
+            //get from 'response' list
             if(response.Equals(NULL))
             {
                 returnList.Add(new List<string>());
@@ -208,6 +210,67 @@ namespace BankCzasu
             return returnList;
         }
 
+        public List<List<String>> SelectWhere(Tables table, Dictionary<Enum, String> fields, params Enum[] columns)
+        {
+            string select   = "";
+            string where    = "";
+            string query    = "";
+
+            List<List<String>> returnList = new List<List<string>>();
+
+
+            //pars columns to select
+            if (columns.Length == 0)
+                select = "*";
+            else
+            {
+                for (int i = 0; i < columns.Length; i++ )
+                {
+                    select += columns[i].ToString();
+                    if (i < columns.Length - 1)
+                        select += ", ";
+                }
+            }
+
+            //pars where
+            foreach (KeyValuePair<Enum, String> field in fields)
+            {
+                string column = field.Key.ToString();
+                string value = field.Value;
+
+                where += column + " = " + value;
+
+                if (!field.Equals(fields.Last()))
+                {
+                    where += " ADD ";
+                }
+            }
+
+            query = String.Format("SELECT {0} FROM {1} WHERE {2}", select, table.ToString(), where);
+
+            string response = POST(query);
+
+            //get from 'response' list
+            if (response.Equals(NULL))
+            {
+                returnList.Add(new List<string>());
+                returnList[0].Add(response);
+            }
+            else
+            {
+                string[] rows = response.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string row in rows)
+                {
+                    returnList.Add(new List<string>());
+                    string[] values = row.Split(new string[] { "}" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string value in values)
+                        returnList[returnList.Count - 1].Add(value);
+                }
+            }
+
+            return returnList;
+        }
+
         public bool Insert(Tables table, Dictionary<Enum, String> fields)
         {
             string into     = "";
@@ -217,6 +280,7 @@ namespace BankCzasu
 
             into = table.ToString();
 
+            //geting columns end values to insert
             foreach(KeyValuePair<Enum, String> field in fields)
             {
                 columns += field.Key.ToString();
@@ -239,9 +303,26 @@ namespace BankCzasu
             return true;
         }
 
-        public bool Delete(Tables table, Enum column, string fieldEqual)
+        public bool Delete(Tables table, Dictionary<Enum, String> fields)
         {
-            string query = String.Format("DELETE FROM {0} WHERE {1} = {2}", table.ToString(), column.ToString(), fieldEqual);
+            string where = "";
+            string query = "";
+
+            //pars where
+            foreach (KeyValuePair<Enum, String> field in fields)
+            {
+                string column = field.Key.ToString();
+                string value = field.Value;
+
+                where += column + " = " + value;
+
+                if (!field.Equals(fields.Last()))
+                {
+                    where += " ADD ";
+                }
+            }
+
+            query = String.Format("DELETE FROM {0} WHERE {1}", table.ToString(), where);
 
             string response = POST(query);
 
@@ -251,21 +332,37 @@ namespace BankCzasu
             return true;
         }
 
-        public bool Update(Tables table, Dictionary<Enum, String> fields, Enum column, string fieldEqual)
+        public bool Update(Tables table, Dictionary<Enum, String> columns, Dictionary<Enum, String> fields)
         {
             string values   = "";
             string query    = "";
+            string where    = "";
 
-            foreach (KeyValuePair<Enum, String> field in fields)
+            //geting columns and new values
+            foreach (KeyValuePair<Enum, String> column in columns)
             {
-                values += field.Key.ToString() + "='" + field.Value + "'";
-                if (!field.Equals(fields.Last()))
+                values += column.Key.ToString() + "=" + column.Value;
+                if (!column.Equals(fields.Last()))
                 {
                     values += ", ";
                 }
             }
 
-            query = String.Format("UPDATE {0} SET {1} WHERE {2} = {3}", table.ToString(), values, column.ToString(), fieldEqual);
+            //pars where
+            foreach (KeyValuePair<Enum, String> field in fields)
+            {
+                string column = field.Key.ToString();
+                string value = field.Value;
+
+                where += column + " = " + value;
+
+                if (!field.Equals(fields.Last()))
+                {
+                    where += " ADD ";
+                }
+            }
+
+            query = String.Format("UPDATE {0} SET {1} WHERE {2}", table.ToString(), values, where);
 
             string response = POST(query);
 
