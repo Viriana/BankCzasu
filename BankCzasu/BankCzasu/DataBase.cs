@@ -125,27 +125,27 @@ namespace BankCzasu
         id_uzytkownika2
     };
 
-    public class DataBase
+    public static class DataBase
     {
-        private static DataBase _instance;
-        public static DataBase instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new DataBase();
-
-                return _instance;
-            }
-        }
-
-        private DataBase() { }
-
-        private const String URI = "http://bankczasu2014.io/index.php";
+        private const String URI = "http://bankczasu2014.cba.pl/index.php";
         private const String TRUE = "TRUE;";
         private const String NULL = "NULL;";
+        private const String SQL_START = "SQL_START;";
+        private const String SQL_END = "SQL_END;";
 
-        private String POST(String query)
+        private static String GetResponse(string response)
+        {
+            string sqlResponse = "";
+
+            int SQLstart = response.IndexOf(SQL_START) + SQL_START.Length;
+            int SQLend = response.IndexOf(SQL_END);
+
+            sqlResponse = response.Substring(SQLstart, SQLend - SQLstart);
+
+            return sqlResponse;
+        }
+
+        private static String POST(String query)
         {
             byte[] response = null;
 
@@ -159,10 +159,10 @@ namespace BankCzasu
 
             }
 
-            return System.Text.Encoding.UTF8.GetString(response);
+            return GetResponse(System.Text.Encoding.UTF8.GetString(response));
         }
 
-        public List< List<String> > Select(Tables table, params Enum[] fields)
+        public static List< List<String> > Select(Tables table, params Enum[] fields)
         {
             string select   = "";
             string from     = "";
@@ -209,8 +209,7 @@ namespace BankCzasu
 
             return returnList;
         }
-
-        public List<List<String>> SelectWhere(Tables table, Dictionary<Enum, String> fields, params Enum[] columns)
+        public static List<List<String>> SelectWhere(Tables table, Dictionary<Enum, String> fields, params Enum[] columns)
         {
             string select   = "";
             string where    = "";
@@ -270,8 +269,7 @@ namespace BankCzasu
 
             return returnList;
         }
-
-        public bool Insert(Tables table, Dictionary<Enum, String> fields)
+        public static bool Insert(Tables table, Dictionary<Enum, String> fields)
         {
             string into     = "";
             string columns  = "";
@@ -302,8 +300,7 @@ namespace BankCzasu
 
             return true;
         }
-
-        public bool Delete(Tables table, Dictionary<Enum, String> fields)
+        public static bool Delete(Tables table, Dictionary<Enum, String> fields)
         {
             string where = "";
             string query = "";
@@ -331,8 +328,7 @@ namespace BankCzasu
 
             return true;
         }
-
-        public bool Update(Tables table, Dictionary<Enum, String> columns, Dictionary<Enum, String> fields)
+        public static bool Update(Tables table, Dictionary<Enum, String> columns, Dictionary<Enum, String> fields)
         {
             string values   = "";
             string query    = "";
