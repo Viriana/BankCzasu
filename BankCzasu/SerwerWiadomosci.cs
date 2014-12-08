@@ -12,6 +12,7 @@ namespace BankCzasu
 {
     class SerwerWiadomosci
     {
+
         static void ShoutboxServer(string[] args)
         {
             int i = 0;

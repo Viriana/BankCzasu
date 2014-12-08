@@ -9,7 +9,7 @@ namespace BankCzasu
 {
     class KlientWiadomosci
     {
-        static void ShoutboxClient(string[] args)
+        public void ShoutboxClient(string[] args)
         {
 
             TcpClient client = new TcpClient();
