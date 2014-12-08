@@ -18,7 +18,6 @@ namespace BankCzasu
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormLogIn());
             SerwerWiadomosci server = new SerwerWiadomosci();
-            
         }
     }
 }

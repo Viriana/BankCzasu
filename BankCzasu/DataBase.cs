@@ -105,7 +105,7 @@ namespace BankCzasu
         id_wybranej_umiejetnosci,
         status_umiejetnosci,
         id_umiejetnosci,
-        id_uzytkownika,
+        id_uzytkownik,
         poziom,
         priorytet
     };
@@ -241,7 +241,7 @@ namespace BankCzasu
 
                 if (!field.Equals(fields.Last()))
                 {
-                    where += " ADD ";
+                    where += " AND ";
                 }
             }
 
