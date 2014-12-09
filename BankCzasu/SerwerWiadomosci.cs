@@ -13,7 +13,7 @@ namespace BankCzasu
     class SerwerWiadomosci
     {
 
-        static void ShoutboxServer(string[] args)
+        public void ShoutboxServer(string[] args)
         {
             int i = 0;
             TcpListener soket = new TcpListener(5);
