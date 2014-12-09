@@ -340,7 +340,7 @@ namespace BankCzasu
             foreach (KeyValuePair<Enum, String> column in columns)
             {
                 values += column.Key.ToString() + "=" + column.Value;
-                if (!column.Equals(fields.Last()))
+                if (!column.Equals(columns.Last()))
                 {
                     values += ", ";
                 }

@@ -128,25 +128,41 @@ namespace BankCzasu
             return question;
         }
 
-        public String RemindPassword(String mail, String answer)
+        public bool RemindPassword(String mail, String answer)
         {
             List<List<String>> helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, DataBase.ToSQLString(mail) } }, uzytkownicy.id_uzytkownika);
             String userID = helpList[0][0];
 
             if (userID.Equals(DataBase.NULL))
-                return "RemindPassword Error userID";
+                return false;
 
-            helpList = DataBase.SelectWhere(Tables.dane_logowania, new Dictionary<Enum, string>() { { dane_logowania.id_uzytkownika, userID } }, dane_logowania.haslo, dane_logowania.odp_pytanie_kon);
-            String password = helpList[0][0];
-            String ans = helpList[0][1];
+            helpList = DataBase.SelectWhere(Tables.dane_logowania, new Dictionary<Enum, string>() { { dane_logowania.id_uzytkownika, userID } }, dane_logowania.odp_pytanie_kon);
+            String ans = helpList[0][0];
 
-            if (password.Equals(DataBase.NULL))
-                return "RemindPassword Error password";
+            if (ans.Equals(DataBase.NULL))
+                return false;
 
             if (!ans.Equals(answer))
-                return "Wrong answer";
+                return false;
 
-            return password;
+            return true;
+        }
+
+        public bool ChangePassword(String mail, String newPassword)
+        {
+            List<List<String>> helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, DataBase.ToSQLString(mail) } }, uzytkownicy.id_uzytkownika);
+            String userID = helpList[0][0];
+
+            if (userID.Equals(DataBase.NULL))
+                return false;
+
+            helpList = DataBase.SelectWhere(Tables.dane_logowania, new Dictionary<Enum, string>() { { dane_logowania.id_uzytkownika, userID } }, dane_logowania.id_logowania);
+            String logID = helpList[0][0];
+
+            if (logID.Equals(DataBase.NULL))
+                return false;
+
+            return DataBase.Update(Tables.dane_logowania, new Dictionary<Enum, string>() { { dane_logowania.haslo, DataBase.ToSQLString(newPassword) } }, new Dictionary<Enum, string>() { { dane_logowania.id_logowania, logID } });
         }
 
     }
