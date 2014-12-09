@@ -30,7 +30,7 @@ namespace BankCzasu
         id_logowania,
         id_uzytkownika,
         haslo,
-        id_pytania_kon,
+        id_pytanie_kon,
         odp_pytanie_kon
     };
     public enum dostepnosc
@@ -127,11 +127,11 @@ namespace BankCzasu
 
     public static class DataBase
     {
-        private const String URI = "http://bankczasu2014.cba.pl/index.php";
-        private const String TRUE = "TRUE;";
-        private const String NULL = "NULL;";
-        private const String SQL_START = "SQL_START;";
-        private const String SQL_END = "SQL_END;";
+        private     const String URI        = "http://bankczasu2014.cba.pl/index.php";
+        private     const String SQL_START  = "SQL_START;";
+        private     const String SQL_END    = "SQL_END;";
+        private     const String TRUE       = "TRUE;";
+        public      const String NULL       = "NULL;";
 
         private static String GetResponse(string response)
         {
@@ -161,6 +161,8 @@ namespace BankCzasu
 
             return GetResponse(System.Text.Encoding.UTF8.GetString(response));
         }
+
+        public static String ToSQLString(String value) { return "'" + value + "'"; }
 
         public static List<List<String>> Select(Tables table, params Enum[] fields)
         {
@@ -315,7 +317,7 @@ namespace BankCzasu
 
                 if (!field.Equals(fields.Last()))
                 {
-                    where += " ADD ";
+                    where += " AND ";
                 }
             }
 
@@ -354,7 +356,7 @@ namespace BankCzasu
 
                 if (!field.Equals(fields.Last()))
                 {
-                    where += " ADD ";
+                    where += " AND ";
                 }
             }
 

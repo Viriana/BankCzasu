@@ -70,6 +70,7 @@
       <DependentUpon>FormLogIn.cs</DependentUpon>
     </Compile>
     <Compile Include="KlientWiadomosci.cs" />
+    <Compile Include="LoginInUser.cs" />
     <Compile Include="MainDebug.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="Program.cs" />
