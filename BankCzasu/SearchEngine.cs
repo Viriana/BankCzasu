@@ -6,22 +6,60 @@ using System.Threading.Tasks;
 
 namespace BankCzasu
 {
-    class SearchEngine
+    /// <summary>
+    /// Klasa realizująca funkcjonalność wyszukiwarki.
+    /// Zrealizowana za pomocą wzorca Singletonu.
+    /// </summary>
+    public class SearchEngine
     {
+        /// <summary>
+        /// Pole prywatne definiujące ustalone imię jako kryterium wyszukiwania
+        /// </summary>
         private string nameCriterion;
+
+        /// <summary>
+        /// Pole prywatne definiujące ustalone nazwisko jako kryterium wyszukiwania
+        /// </summary>
         private string surnameCriterion;
+
+        /// <summary>
+        /// Pole prywatne definiujące ustalony wiek jako kryterium wyszukiwania
+        /// </summary>
         private int ageCriterion;
+
+        /// <summary>
+        /// Pole prywatne definiujące ustalone umiejętności jako kryterium wyszukiwania
+        /// </summary>
         private List<Skill> skillsCriterion;
+
+        /// <summary>
+        /// Pole prywatne definiujące kryterium sortowania względem imienia
+        /// </summary>
         private bool sortByName;
+
+        /// <summary>
+        /// Pole prywatne definiujące kryterium sortowania względem nazwiska
+        /// </summary>
         private bool sortBySurname;
+
+        /// <summary>
+        /// Pole prywatne definiujące kryterium sortowania względem wieku
+        /// </summary>
         private bool sortByAge;
 
+        /// <summary>
+        /// Prywatna zmienna statyczna przechowująca referencję do jedynego obiektu klasy SearchEngine
+        /// </summary>
         private static SearchEngine _instance;
+
+        /// <summary>
+        /// Publiczna właściwość pozwalająca na dostęp do jedynej referencji do klasy SearchEngine
+        /// </summary>
         public static SearchEngine Instance
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
                     _instance = new SearchEngine();
                 }
@@ -29,6 +67,11 @@ namespace BankCzasu
             }
         }
 
+        /// <summary>
+        /// Prywatny konstruktor domyślny
+        /// Został uczyniony prywatnym w celu poprawnej realizacj wzorca Singletonu
+        /// Poprzez ustalenie go prywatnym nie ma innej możliwości otrzymania egzemplarza tej klasy niż skorzystanie z właściwości Instance
+        /// </summary>
         private SearchEngine()
         {
             sortByName = true;
@@ -40,18 +83,24 @@ namespace BankCzasu
             skillsCriterion = null;
         }
 
+        /// <summary>
+        /// Funckja porównująca dwie listy umiejętności
+        /// </summary>
+        /// <param name="skillsA">Pierwsza lista umiejętności do porównania</param>
+        /// <param name="skillsB">Druga lista umiejętności do porównania</param>
+        /// <returns>Zwraca true jeśli listy są równe (obiekty są w tej samej kolejności i mają te same dane). W przeciwnym wypadku zwraca false.</returns>
         private bool SkillCompare(List<Skill> skillsA, List<Skill> skillsB)
         {
             bool x = true;
 
-            if((skillsA.Count) != skillsB.Count)
+            if ((skillsA.Count) != skillsB.Count)
             {
                 return false;
             }
 
             for (int i = 0; i < skillsB.Count; i++)
             {
-                if(skillsA[i].name != skillsB[i].name || skillsA[i].exp_level != skillsB[i].exp_level)
+                if (skillsA[i].name != skillsB[i].name || skillsA[i].exp_level != skillsB[i].exp_level)
                 {
                     x = false;
                 }
@@ -60,6 +109,10 @@ namespace BankCzasu
             return x;
         }
 
+        /// <summary>
+        /// Funkcja wyszukująca użytkowników o wcześniej ustalonych kryteriach i sortująca uzyskane wyniki względem wcześniej ustalonych kryteriów sortowania
+        /// </summary>
+        /// <returns>Zwraca listę użytkowników pasujących do kryteriów. W przypadku niepowodzenia zwraca wartość null</returns>
         public List<User> Find()
         {
             List<User> toRet = new List<User>();
@@ -76,7 +129,7 @@ namespace BankCzasu
             string[] emails = new string[returnedSelect.Count];
             Dictionary<Enum, string> id_do_logowania = new Dictionary<Enum, string>();
 
-            for(int i = 0; i < returnedSelect.Count; i++)
+            for (int i = 0; i < returnedSelect.Count; i++)
             {
                 id[i] = returnedSelect[i][0];
                 names[i] = returnedSelect[i][1];
@@ -90,12 +143,12 @@ namespace BankCzasu
 
             string[][] skillID = new string[id.Length][];
             string[][] experience = new string[id.Length][];
-            for(int i = 0; i < id.Length; i++)
+            for (int i = 0; i < id.Length; i++)
             {
                 List<List<string>> skills = DataBase.SelectWhere(Tables.wybrane_umiejetnosci, new Dictionary<Enum, string>() { { wybrane_umiejetnosci.status_umiejetnosci, "'posiadana'" }, { wybrane_umiejetnosci.id_uzytkownik, id[i] } }, wybrane_umiejetnosci.id_umiejetnosci, wybrane_umiejetnosci.poziom);
                 skillID[i] = new string[skills.Count - 1];
                 experience[i] = new string[skills.Count - 1];
-                for(int j = 0; j < skills.Count - 1;j++)
+                for (int j = 0; j < skills.Count - 1; j++)
                 {
                     if (skills[j].Count > 1)
                     {
@@ -112,13 +165,13 @@ namespace BankCzasu
 
             string[][] skillName = new string[id.Length][];
 
-            for (int i = 0; i < id.Length;i++)
+            for (int i = 0; i < id.Length; i++)
             {
                 skillName[i] = new string[skillID[i].Length];
-                for(int j = 0; j < skillID[i].Length; j++)
+                for (int j = 0; j < skillID[i].Length; j++)
                 {
                     List<List<string>> skills = DataBase.SelectWhere(Tables.umiejetnosci, new Dictionary<Enum, string>() { { umiejetnosci.id_umiejetnosci, skillID[i][j] } }, umiejetnosci.nazwa);
-                    for(int k=0;k<skills.Count; k++)
+                    for (int k = 0; k < skills.Count; k++)
                     {
                         skillName[i][k] = skills[k][0];
                     }
@@ -129,9 +182,9 @@ namespace BankCzasu
             for (int i = 0; i < id.Length; i++)
             {
                 toCompare.Add(new List<Skill>());
-                for(int j = 0; j < skillID[i].Length; j++)
+                for (int j = 0; j < skillID[i].Length; j++)
                 {
-                    toCompare[i].Add(new Skill(skillName[i][j],experience[i][j]));
+                    toCompare[i].Add(new Skill(skillName[i][j], experience[i][j]));
                 }
             }
 
@@ -139,12 +192,12 @@ namespace BankCzasu
             {
                 if (nameCriterion != "" && surnameCriterion != "" && ageCriterion != -1 && skillsCriterion != null)
                 {
-                    if(names[i] == nameCriterion && surnames[i] == surnameCriterion && Convert.ToInt32(ages[i]) == ageCriterion && SkillCompare(toCompare[i], skillsCriterion))
+                    if (names[i] == nameCriterion && surnames[i] == surnameCriterion && Convert.ToInt32(ages[i]) == ageCriterion && SkillCompare(toCompare[i], skillsCriterion))
                     {
                         int intID = Convert.ToInt32(id[i]);
                         int intAge = Convert.ToInt32(ages[i]);
                         User newUser = new User(intID, names[i], surnames[i], intAge, "", "", sex[i], adresses[i], phoneNumbers[i], emails[i]);
-                        foreach(Skill s in skillsCriterion)
+                        foreach (Skill s in skillsCriterion)
                         {
                             newUser.addSkillHeld(s);
                         }
@@ -379,6 +432,13 @@ namespace BankCzasu
             return toRet;
         }
 
+        /// <summary>
+        /// Funkcja ustalająca kryteria wyszukiwania
+        /// </summary>
+        /// <param name="_name">Imie, które ma być jednym z kryteriów. Może być wartością null lub stringiem pustym</param>
+        /// <param name="_surname">Nazwisko, które ma być jednym z kryteriów. Może być wartością null lub stringiem pustym</param>
+        /// <param name="_age">Wiek, który ma być jednym z kryteriów wyszukiwania. Aby nie używać go jako kryterium wyszukiwania należy podać -1</param>
+        /// <param name="_skills">Lista umiejętności mająca posłużyć za kryterium wyszukiwania. Aby nie została rozpatrywana jako kryterium należy podać wartość null</param>
         public void SetCriterions(string _name, string _surname, int _age, List<Skill> _skills)
         {
             nameCriterion = _name;
@@ -387,6 +447,9 @@ namespace BankCzasu
             skillsCriterion = _skills;
         }
 
+        /// <summary>
+        /// Funkcja ustalająca kryterium sortowania względem imienia
+        /// </summary>
         public void SortByName()
         {
             sortByName = true;
@@ -394,6 +457,9 @@ namespace BankCzasu
             sortByAge = false;
         }
 
+        /// <summary>
+        /// Funkcja ustalająca kryterium sortowania względem nazwiska
+        /// </summary>
         public void SortBySurname()
         {
             sortByName = false;
@@ -401,6 +467,9 @@ namespace BankCzasu
             sortByAge = false;
         }
 
+        /// <summary>
+        /// Funkcja ustalająca kryterium sortowania względem wieku
+        /// </summary>
         public void SortByAge()
         {
             sortByName = false;

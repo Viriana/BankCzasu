@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankCzasu
 {
-    class Skill
+    public class Skill
     {
         public String name;
         public String exp_level;
