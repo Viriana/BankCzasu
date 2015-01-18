@@ -24,9 +24,12 @@ namespace BankCzasu
 
         public static void odbierz(Wiadomosc odczyt)
         {
+            XmlSerializer serializer1 = new XmlSerializer(typeof(Wiadomosc));
+            string path = "historia.xml";
+            StreamReader reader = new StreamReader(path);
 
-
-
+            odczyt = (Wiadomosc)serializer1.Deserialize(reader);
+            reader.Close();
 
         }
     }
