@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankCzasu
 {
-    class Meeting
+    public class Meeting
     {
         public int event_ID;
         public int user_ID;

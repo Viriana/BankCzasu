@@ -98,8 +98,11 @@
     <Compile Include="SearchEngine.cs" />
     <Compile Include="SerwerWiadomosci.cs" />
     <Compile Include="Skill.cs" />
+    <Compile Include="Skrzynka.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Wiadomosc.cs" />
+    <EmbeddedResource Include="Chat.resx" />
     <EmbeddedResource Include="FormLogIn.resx">
       <DependentUpon>FormLogIn.cs</DependentUpon>
     </EmbeddedResource>
