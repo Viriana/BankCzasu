@@ -12,7 +12,7 @@ namespace BankCzasu
 {
     public partial class ProfileForm : Form
     {
-        User currentUser = new User(5, "Marek", "Kowalski", 34, "Dandelion", "qwerty", "male", "Valley of Flowers", "555444333", "dandek@temeria.jp");
+        public User currentUser = new User(5, "Marek", "Kowalski", 34, "Dandelion", "qwerty", "male", "Valley of Flowers", "555444333", "dandek@temeria.jp");
         
         public ProfileForm()
         {

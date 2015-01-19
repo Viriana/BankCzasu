@@ -10,17 +10,17 @@ using System.Windows.Forms;
 
 namespace BankCzasu
 {
-    public partial class MainForm : Form
+    public partial class MyProfileViewForm : ProfileForm
     {
-        public MainForm()
+        public MyProfileViewForm()
         {
+            currentUser = LoginInUser.instance.logInUser;
             InitializeComponent();
         }
 
-        private void btnMyProfile_Click(object sender, EventArgs e)
+        void OnBtnEditClick(Object sender, EventArgs e)
         {
-            MyProfileViewForm form = new MyProfileViewForm();
-            form.ShowDialog();
+            MainDebug.Log("Button edit clicked", this);
         }
     }
 }
