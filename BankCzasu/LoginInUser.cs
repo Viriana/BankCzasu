@@ -27,18 +27,26 @@ namespace BankCzasu
         public bool Login(String mail, String password)
         {
             List<List<String>> helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, DataBase.ToSQLString(mail) } }, uzytkownicy.id_uzytkownika);
+
+            if (helpList.Count == 0)
+                return false;
+
             String userID = helpList[0][0];
 
             if (userID.Equals(DataBase.NULL))
                 return false;
 
             helpList = DataBase.SelectWhere(Tables.dane_logowania, new Dictionary<Enum, string>() { { dane_logowania.id_uzytkownika, userID } }, dane_logowania.haslo);
+            if (helpList.Count == 0)
+                return false;
             String userPass = helpList[0][0];
 
             if (userPass.Equals(DataBase.NULL) || !userPass.Equals(password))
                 return false;
 
             helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.id_uzytkownika, userID } });
+            if (helpList.Count == 0)
+                return false;
             logInUser = new User(int.Parse(userID), helpList[0][1], helpList[0][2], int.Parse(helpList[0][3]), mail, password, helpList[0][7], helpList[0][5], helpList[0][4], mail);
 
             if (logInUser == null)
@@ -79,6 +87,8 @@ namespace BankCzasu
                 return false;
 
             List<List<String>> user = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, SQLmail } }, uzytkownicy.id_uzytkownika);
+            if (user.Count == 0)
+                return false;
             if(user.Equals(DataBase.NULL))
             {
                 DataBase.Delete(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, SQLmail } });
@@ -108,6 +118,9 @@ namespace BankCzasu
         public String GetQuestion(String mail)
         {
             List<List<String>> helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, DataBase.ToSQLString(mail) } }, uzytkownicy.id_uzytkownika);
+            if (helpList.Count == 0)
+                return "GetQuestion Error mail";
+
             String userID = helpList[0][0];
 
             if (userID.Equals(DataBase.NULL))
@@ -131,6 +144,9 @@ namespace BankCzasu
         public bool RemindPassword(String mail, String answer)
         {
             List<List<String>> helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, DataBase.ToSQLString(mail) } }, uzytkownicy.id_uzytkownika);
+            if (helpList.Count == 0)
+                return false;
+
             String userID = helpList[0][0];
 
             if (userID.Equals(DataBase.NULL))
@@ -151,12 +167,16 @@ namespace BankCzasu
         public bool ChangePassword(String mail, String newPassword)
         {
             List<List<String>> helpList = DataBase.SelectWhere(Tables.uzytkownicy, new Dictionary<Enum, string>() { { uzytkownicy.mail, DataBase.ToSQLString(mail) } }, uzytkownicy.id_uzytkownika);
+            if (helpList.Count == 0)
+                return false;
             String userID = helpList[0][0];
 
             if (userID.Equals(DataBase.NULL))
                 return false;
 
             helpList = DataBase.SelectWhere(Tables.dane_logowania, new Dictionary<Enum, string>() { { dane_logowania.id_uzytkownika, userID } }, dane_logowania.id_logowania);
+            if (helpList.Count == 0)
+                return false;
             String logID = helpList[0][0];
 
             if (logID.Equals(DataBase.NULL))
