@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankCzasu
 {
-    class User
+    public class User
     {
         //every user's attributes
         public String password;

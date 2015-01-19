@@ -40,7 +40,7 @@ namespace BankCzasu
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            bool result = true;// LoginInUser.instance.Login(tbEmail.Text, tbPassword.Text);
+            bool result = LoginInUser.instance.Login(tbEmail.Text, tbPassword.Text);// LoginInUser.instance.Login(tbEmail.Text, tbPassword.Text);
 
             if (result)
             {
