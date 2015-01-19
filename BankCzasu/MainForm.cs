@@ -22,5 +22,11 @@ namespace BankCzasu
             MyProfileViewForm form = new MyProfileViewForm();
             form.ShowDialog();
         }
+
+        private void TestProfileForm_Click(object sender, EventArgs e)
+        {
+            ProfileForm form = new ProfileForm();
+            form.ShowDialog();
+        }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.btnMyProfile = new System.Windows.Forms.Button();
+            this.TestProfileForm = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnMyProfile
@@ -41,11 +42,22 @@
             this.btnMyProfile.UseVisualStyleBackColor = true;
             this.btnMyProfile.Click += new System.EventHandler(this.btnMyProfile_Click);
             // 
+            // TestProfileForm
+            // 
+            this.TestProfileForm.Location = new System.Drawing.Point(152, 12);
+            this.TestProfileForm.Name = "TestProfileForm";
+            this.TestProfileForm.Size = new System.Drawing.Size(161, 23);
+            this.TestProfileForm.TabIndex = 1;
+            this.TestProfileForm.Text = "TestProfileForm";
+            this.TestProfileForm.UseVisualStyleBackColor = true;
+            this.TestProfileForm.Click += new System.EventHandler(this.TestProfileForm_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 377);
+            this.Controls.Add(this.TestProfileForm);
             this.Controls.Add(this.btnMyProfile);
             this.Name = "MainForm";
             this.Text = "MainForm";
@@ -56,5 +68,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnMyProfile;
+        private System.Windows.Forms.Button TestProfileForm;
     }
 }
