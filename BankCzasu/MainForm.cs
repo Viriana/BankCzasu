@@ -28,5 +28,11 @@ namespace BankCzasu
             ProfileForm form = new ProfileForm();
             form.ShowDialog();
         }
+
+        private void ChatButton_Click(object sender, EventArgs e)
+        {
+            Chat form = new Chat();
+            form.ShowDialog();
+        }
     }
 }

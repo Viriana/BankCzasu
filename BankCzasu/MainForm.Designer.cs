@@ -30,6 +30,7 @@
         {
             this.btnMyProfile = new System.Windows.Forms.Button();
             this.TestProfileForm = new System.Windows.Forms.Button();
+            this.ChatButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnMyProfile
@@ -52,11 +53,22 @@
             this.TestProfileForm.UseVisualStyleBackColor = true;
             this.TestProfileForm.Click += new System.EventHandler(this.TestProfileForm_Click);
             // 
+            // ChatButton
+            // 
+            this.ChatButton.Location = new System.Drawing.Point(400, 12);
+            this.ChatButton.Name = "ChatButton";
+            this.ChatButton.Size = new System.Drawing.Size(75, 23);
+            this.ChatButton.TabIndex = 2;
+            this.ChatButton.Text = "Chat";
+            this.ChatButton.UseVisualStyleBackColor = true;
+            this.ChatButton.Click += new System.EventHandler(this.ChatButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 377);
+            this.Controls.Add(this.ChatButton);
             this.Controls.Add(this.TestProfileForm);
             this.Controls.Add(this.btnMyProfile);
             this.Name = "MainForm";
@@ -69,5 +81,6 @@
 
         private System.Windows.Forms.Button btnMyProfile;
         private System.Windows.Forms.Button TestProfileForm;
+        private System.Windows.Forms.Button ChatButton;
     }
 }
